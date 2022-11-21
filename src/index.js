@@ -1,9 +1,9 @@
 import './css/styles.css';
+import fetchCountry from './fetchCountries';
 import Notiflix from 'notiflix';
 const debounce = require('lodash.debounce');
 
 const DEBOUNCE_DELAY = 600;
-const BASE_URL = 'https://restcountries.com/v3.1/';
 
 const refs = {
   inputEl: document.querySelector('#search-box'),
@@ -13,23 +13,9 @@ const refs = {
 
 refs.inputEl.addEventListener('input', debounce(onSearch, DEBOUNCE_DELAY));
 
-function fetchCountry(name) {
-  return fetch(
-    `${BASE_URL}name/${name}?fields=name,capital,population,languages,flags`
-  ).then(response => {
-    if (!response.ok) {
-      throw new Error(
-        Notiflix.Notify.failure(`Oops, there is no country with that name`)
-      );
-    }
-    return response.json();
-  });
-}
-
 function onSearch(evt) {
   evt.preventDefault();
   name = evt.target.value.trim();
-  console.log(name);
 
   if (!name) {
     refs.countryList.innerHTML = ' ';
